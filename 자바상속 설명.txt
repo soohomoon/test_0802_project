@@ -1,0 +1,254 @@
+흔히 말하는 객체지향의 언어라는 자바의 주요 특징중 하나인 상속에 대해 알아보도록 하겠습니다. 
+문자 그대로 부모님의 재산을 물려받아 내것이 된다는 의미로서 
+자바에서는 부모 클래스내의 존재하는 모든 것들을 모두 이어받어 자식 클래스내에서 사용 가능하다는 것을 의미합니다.
+
+우선 부모 클래스의 내용을 살펴보자면 인스턴스 변수로서 문자열 name 과 정수 number 가 존재합니다.
+pa p1 = new pa(); 를 통해 객체를 생성하게 되면 매개변수가 없는 기본 생성자 pa(); 가 호출 되어 
+
+Parent's constractor pa() is made.
+null is made and age is 0
+Parent is done
+
+출력됩니다. 여기서 2번째열 "null is made and age is 0" 을 보게 되면 name과 number가 선언되지 않아 
+디폴트값인 null 과 0이 입력됩니다. 
+
+두번째로 pa p2 = new pa("Alice", 45); 를 통해 객체를 생성하게 된다면 
+
+Parent's constractor pa(parameter) is made.
+Alice is made and age is 45
+Parent is done
+
+name 과 number 값이 생성자로 부터 선언되어 "Alice is made and age is 45" name = "Alice", number = 45 
+가 된 것을 알수 있습니다.
+
+인스턴스 변수를 변경할수 있는 매서드 public void changeVariable(String name, int number) 와
+지역 변수를 변경할수 있는 매서드 public void changeLocalVariable(String Lname, int Lnumber) 가 존재합니다.
+
+그리고 이 부모 클래스를 상속할 자식 클래스를 살펴보겠습니다.
+extends pa 를 통해 상속관계를 선언할수 있습니다. 
+
+이 자식 클래스내에도 부모클래스내에 존재하는 인스턴스변수의 이름과 동일한 문자열 name과 정수 number 가 존재합니다. 
+*왜 그랬는지 부가설명
+
+매개변수가 없는 기본 생성자와 매개변수를 통해 인스턴스 변수를 선언할수 있는 생성자가 존재합니다. 
+그리고 부모클래스에 존재하는 changeVariable 매서드를 오버라이딩한 매서드가 존재합니다.
+
+자 이제부터 본격적으로 상속에 대해 알아보도록 하겠습니다. 
+
+자식 클래스의 객체를 생성해보도록 하겠습니다.  child c1 = new child(); 매개변수가 없는 생성자를 호출합니다 
+
+Parent's constractor pa() is made.
+null is made and age is 0
+Parent is done
+Child's constractor is made.
+null is made and age is 0
+Child is done
+
+그런데 말이죠. 분명히 자식클래스의 객체를 생성했는데 뜬금없이 부모의 생성자를 생성한 것을 알수 있습니다.
+여기서 알게된 사실 자식클래스를 통해 객체를 생성하게되면 부모의 객체가 같이 생성된다는 사실을 알게 되었습니다.
+현실적으로 생각해보면 자식이 태어나기 위해서는 부모님들이 있어야 하듯이 자바에서도 자식에 탄생이전에 부모가 존재해야 한다는 의미입니다.
+
+다시 말해서 자식클래스에서 객체를 생성하게 되면 부모클래스의 객체를 먼저 생성한다는 사실을 알게 되었습니다.
+사실 자식 클래스의 생성자 child(); 안에는 super(); 가 숨어있는 것입니다.
+
+child(){
+	
+		System.out.println("Child's constractor is made.");
+		System.out.println(this.name + " is made and age is " + this.number);
+		System.out.println("Child is done");
+		
+	}
+
+
+child(){
+		super();
+		System.out.println("Child's constractor is made.");
+		System.out.println(this.name + " is made and age is " + this.number);
+		System.out.println("Child is done");
+		
+	}	
+
+
+위 2개의 생성자는 동일하다고 말할수 있는 것입니다. 
+
+여기서 한가지 의문이 생길수 있습니다. 
+
+Child's constractor is made.
+null is made and age is 0
+Child is done
+Parent's constractor pa() is made.
+null is made and age is 0
+Parent is done
+
+이렇게 출력순서를 바꿀순 없을까요? 그리고 간간히 보이는 this 와 super(); 는 무엇일까요?
+이것에 대한 내용은 다음번에 다루도록 하겠습니다.
+
+다시 넘어가서 부모와 자식 두 클래스내에서 인스턴스 변수들 name 과 number 이 부모클래스내와 자식클래스내에서 
+동일한 이름으로 선언되어 있다는 것을 보고 있습니다. 
+
+그렇다면 매개변수를 가지고 있는 생성자를 선언하겠습니다.
+
+	child(String name, int number){
+		this.name = name;
+		this.number = number;
+		System.out.println("Child's constractor is made.");
+		System.out.println(this.name + " is made and age is " + this.number);
+		System.out.println("Child is done");
+		
+	}
+
+child c2 = new child("Bob",34); 를 통해
+
+
+Parent's constractor pa() is made.
+null is made and age is 0
+Parent is done
+Child's constractor is made.
+Bob is made and age is 34
+Child is done
+
+child c1 = new child(); 와의 차이점을 발견하셨나요?
+
+c1 의 null is made and age is 0 대신 Bob is made and age is 34 가 선언되었습니다. 
+매개변수를 통해 자식클래스의 변수가 선언되었기 때문입니다.
+
+만약 child(String name, int number) 에
+super(name, number); 가 선언되어 있다면 어떻게 될까요?
+음 자식과 부모 둘다 동일한 매개변수 "bob", 34 를 입력 받게 되어
+Parent's constractor pa(parameter) is made.
+Bob is made and age is 34
+Parent is done
+Child's constractor is made.
+Bob is made and age is 34
+Child is done
+
+가 됨을 알수 있습니다.
+
+마무리 하자면 상속받은 클래스에서 객체를 생성하게 될때 기본적으로 부모의 생성자를 먼저 생성한 뒤 자식의 생성자를 
+생성한다는 사실을 알수 있었습니다. 그리고 따로 지정하지 않는 한 기본적으로 super(); 가 호출되다는 사실을 알게 되었습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+그렇다면 만약 자식클래스내에서 name = "Alice", number = 66 라고 선언한다면 
+이는 자식클래스내의 변수를 선언하는 것일까요 아니면 부모클래스내의 변수를 선언하는 것일까요?
+
+public void changeVariable(String name, int number){
+		this.name = name;
+		this.number = number;
+		System.out.println(this.name +" and " + this.number + " are changed by this method");
+		//인스턴스 변수를 바꾸는 메서드;
+	}
+	
+분명히 상속이란 부모내의 변수와 메소드를 내것으로 이용한다고 했으니깐 자식내 변수들이 변경될거 같은데요 
+c1.changeVariable("Alice", 59);
+
+"Alice and 59 are changed by this method"
+
+이렇게 호출됨을 보았습니다. 자 그렇다면 부모와 자식의 변수중 누가 바뀌었는지 알아보겠습니다. 
+
+System.out.println(c1.toString1());
+//자식클래스 변수를 보는 메소드
+System.out.println(c1.toString());
+//부모클래스 변수를 보는 메소드
+
+child's class name : null number : 0
+parent's class name : Alice number : 59
+
+부모의 메소드를 상속받았지만 이 메소드의 역할은 이 클래스내의 변수를 변경하는 기능을 가지고 있지 클래스를 벗어난
+다른 클래스의 변수를 바꾸는 기능은 가지고 있지 않기 때문입니다. 
+
+그렇다면 이 메소드를 오버라이딩해서 자식내 선언하겠습니다
+
+Alice and 59 are changed by this method
+child's class name : Alice number : 59
+parent's class name : null number : 0
+
+이렇게 반대로 자식클래스의 변수가 변경되었음을 알 수 있습니다.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+이 매서드는 인스턴스 변수 name 과 number 를 변경해주는 메서드로서 부모클래스에서 제작되었으며 자식 클래스에서 
+오버라이드 되었습니다. 오버라이딩 역시 다음 시간에 다시 다루도록 하겠습니다. 
+
+c1.changeVariable("Alice", 66); 
+
+이렇게 main 영역에 선언해보도록 하겠습니다. 
+"Alice and 66 are changed by this method"
+
+이렇게 출력됨을 알수 있습니다. 그렇다면 "Alice" 와 66은 누구의 변수가 변경된 것일까요?
+
+Bob and 59 are changed by this method
+child's class name : Bob number : 59
+parent's class name : null number : 0
+
+toString 을 통해 부모와 자식의 변수를 출력했습니다. 
+
+아하 분명히 changeVariable(String name, int number) 는 부모와 자식간 둘다 존재하는데 
+자식 생성자 c1은 본인내부에 선언된 메소드를 사용했음을 알수 있습니다.
+
+그렇다면 만약 자식클래스내에 changeVariable(String name, int number)를 삭제한다면 어떻게 될까요?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
