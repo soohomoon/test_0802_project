@@ -1,0 +1,168 @@
+패턴매칭
+두 문자열 T(text) and P(pattern) 를 보자
+패턴매칭은 일치를 찾는것 
+완벽일치 또는 첫 문자열 일치
+패턴매칭은 문자 편집 프로그램
+DNA processing
+비트맵 검색과 다른 타입의 파일
+
+T = abaaabacccaabbaccaababacaababaac 
+P = aab
+
+T = aba aab accc aab bacc aab abac aab abaac
+P = aab
+
+s =  {3, 10, 17, 24} 
+
+
+/abaaabacccaabbaccaababacaababaac 
+ aab
+
+두번째 문자에서 매칭 실패
+
+a/baaabacccaabbaccaababacaababaac 
+  aab
+첫번째 문자에서 매칭 실패
+
+aba/aabacccaabbaccaababacaababaac 
+    aab
+	
+	4번째 문자에서 매칭 가능
+
+procedure naive (T,P)
+result = {}
+for s = 0 to n-m 
+	match = true
+	for j = 0 to m - 1
+		if T[s+j] !=P[j]
+		 match = false
+	if match 
+		result = result + {s}
+
+
+
+
+T = abaaabacccaabbaccaababacaababaac 
+P = aab
+
+
+s =  {3, 10, 17, 24} 
+
+
+n 은 t의 길이
+m 은 s의 길이
+
+n-m+1 개의 이동이 생긴다
+최악의 경우 마지막문자열까지 검색하는 상황에는 m^th 까지 간다
+최악의 경우의 시간복잡도는 O(m(n-m+1)) 
+나이브는 두가지에서 비효율
+
+in the shifthing process : 시프트 s를 체크할때 이전에 조사되었던 결과값이 무시된다
+s-1번째는 처음문자부터 s-1까지 
+
+00000010000000100000010000001
+0000000
+
+분명히 7번째에서 매칭 실패했기에 다음 시프트가 t의 2번부터 검색이 아니라 8번부터 가야한다
+
+0이 매칭이 7번째에서 실패 했는데 이 정보를 재사용해야한다 Knuth-Morris-Pratt and Boyer-Moore
+exploit this inefficiency 
+
+in the comparision process 
+문자열과 문자를 각각 비교한다
+Rabin-Karp exploits this inefficiency 
+
+라빈카프 알고리즘
+
+싱글 비교의 가장안쪽루프를 대체한다 
+
+알파벳을 정수로 바꾸자
+
+122938491281760821308176283101
+176
+
+176과 122를 비교하자 
+
+해싱에다가 
+
+H(x) = x MOD 10 
+
+val[0] = 
+val[1] = 11
+val[2] = 
+val[3] = 34
+val[4] = 
+val[5] = 45 , 15
+val[6] = 
+val[7] = 37
+val[8] = 
+val[9] =
+
+
+근데 45랑 15랑 충돌 합니다
+
+어쨋든 해시는 한위치에 여러가지가 저장 가능하니깐
+링크드 리스트의 형태
+값을 갑입, 삭제, 탐새 이상적인 연산은 O(1) 시간복잡도
+
+제일 무식한 방법은 S의 길이 N P의 길이 M O(NM)
+모든 문자비교 
+
+라빈카프는 해당위치의 해시값을 비교해서 같다면 그때야 단순비겨
+해당 위치의 부분 문자열과 찾으려는 단어가 다르면서 해시값으 같을순 있지만
+해시값이 다르면서 문자열들이 일치할수는 없다
+
+ababcde abcdefg h(X) = 37
+abcdefg h(x) =55
+
+해시값 달라서 넘어가고
+문자열 S에서 패턴 p 를 찾아라 
+
+ab abcdeab cdefg h(X) = 55
+   abcdefg h(x) =55
+
+해시값이 일단 같으니 단순문자 비교 해보고
+근디 아니다
+
+ababcde abcdefg h(X) = 55
+        abcdefg h(x) =55
+
+또 같은놈 찾았는데 실제비교시 같드러
+
+매번 O(M) 패턴길이만큼 걸려 
+
+어쨋든 해시값이 같아야 비교가능
+
+라빈 카프 알고리즘에서 메이저하게 사용되는 해시함수는 Rabin fingerprint입니다.
+
+
+h(x) 의 기본식은
+
+문자열 a 와 문자열 b의 길이를 수치로 변환
+n은 a문자열의 n번째 문자 
+m은 b문자열의 길이
+
+hi = a[i]*2^(m-1) + a[i+1]*2^(m-2) + .. .. + a[i+m-2]*2^1 + a[i+m-1]*2^0
+a[0]부터 a[m] 까지 수치값 m = 4
+h0 = a[0]*2^3 + a[1]*2^2 + a[2]*2^1 + a[3]*2^0 
+h1 = a[1]*2^3 + a[2]*2^2 + a[3]*2^1 + a[4]*2^0
+   = 2(a[1]*2^2 + a[2]*2^1 + a[3]*2^0) + a[4]*2^0
+   = 2(a[0]*2^3 + a[1]*2^2 + a[2]*2^1 + a[3]*2^0-a[0]*2^3 ) + a[4]*2^0 
+h1 = 2(h0 -a[0]*2^3) +a[4]*2^0 
+hn = 2(h(n-1) -a[n-1]*2^(m-1) + a[i+m-1]*2^0 =
+
+
+https://idea-sketch.tistory.com/24
+
+
+
+
+
+
+
+
+
+
+
+
+
